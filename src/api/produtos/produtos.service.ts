@@ -25,8 +25,14 @@ export class ProdutosService {
     throw new HttpException("Erro ao cadastrar um novo produto.", HttpStatus.BAD_REQUEST)
   }
 
-  findAll() {
-    return `This action returns all produtos`;
+  async Listar() {
+    const produtos = await this.prisma.produtos.findMany()
+
+    if(produtos.length > 0) {
+      return produtos
+    }
+
+    throw new HttpException("Não existe nenhum produto cadastrado no sistema.", HttpStatus.NOT_FOUND)
   }
 
   findOne(id: number) {
