@@ -18,17 +18,17 @@ export class ProdutosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.produtosService.findOne(+id);
+  FiltrarID(@Param('id') id: string) {
+    return this.produtosService.BuscarPorID(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
-    return this.produtosService.update(+id, updateProdutoDto);
+  Atualizar(@Param('id') id: number, @Body() updateProdutoDto: UpdateProdutoDto) {
+    return this.produtosService.Atualizar(id, updateProdutoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.produtosService.remove(+id);
+  Apagar(@Param('id') id: number) {
+    return this.produtosService.Apagar(id);
   }
 }
