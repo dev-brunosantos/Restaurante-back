@@ -75,7 +75,19 @@ export class ProdutosService {
     throw new HttpException("Não existe nenhum produto vinculado ao ID informado.", HttpStatus.NOT_FOUND)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} produto`;
+  async Apagar(id: number) {
+    const produtoID = await this.prisma.produtos.findFirst({
+      where: { id }
+    })
+
+    if(produtoID) {
+      await this.prisma.produtos.delete({
+        where: { id }
+      })
+
+      return `Os dados do produto ${produtoID.nome.toUpperCase()} foram excluídos como solicitado.`
+    }
+
+    throw new HttpException("Não existe nenhum produto vinculado ao ID informado.", HttpStatus.NOT_FOUND)
   }
 }
