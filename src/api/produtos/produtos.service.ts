@@ -16,7 +16,11 @@ export class ProdutosService {
 
     if(!produtoExistente) {
       const novoProduto = await this.prisma.produtos.create({
-        data: createProdutoDto
+        data: {
+          nome: createProdutoDto.nome,
+          descricao: createProdutoDto.descricao,
+          preco: createProdutoDto.preco
+        }
       })
 
       return novoProduto
@@ -49,7 +53,7 @@ export class ProdutosService {
 
   async Atualizar(id: number, updateProdutoDto: UpdateProdutoDto) {
 
-    const { nome, descricao, preco } = updateProdutoDto;
+    // const { nome, descricao, preco } = updateProdutoDto;
 
     const produtoID = await this.prisma.produtos.findFirst({
       where: { id }
@@ -58,11 +62,12 @@ export class ProdutosService {
     if(produtoID) {
       const atualizacao = await this.prisma.produtos.update({
         where: { id },
-        data: {
-          nome: nome === "" ? produtoID.nome : nome,
-          descricao: descricao === "" ? produtoID.descricao : descricao,
-          preco: preco === 0 ? produtoID.preco : preco
-        }
+        // data: {
+        //   nome: updateProdutoDto.nome === "" ? produtoID.nome : updateProdutoDto.nome,
+        //   descricao: updateProdutoDto.descricao === "" ? produtoID.descricao : updateProdutoDto.descricao,
+        //   preco: updateProdutoDto.preco === 0 ? produtoID.preco : updateProdutoDto.preco
+        // }
+        data: updateProdutoDto
       })
 
       return {

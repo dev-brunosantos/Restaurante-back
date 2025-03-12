@@ -23,12 +23,12 @@ export class ProdutosController {
   }
 
   @Patch(':id')
-  Atualizar(@Param('id') id: number, @Body() updateProdutoDto: UpdateProdutoDto) {
-    return this.produtosService.Atualizar(id, updateProdutoDto);
+  Atualizar(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
+    return this.produtosService.Atualizar(+id, updateProdutoDto);
   }
 
   @Delete(':id')
-  Apagar(@Param('id') id: number) {
-    return this.produtosService.Apagar(id);
+  Apagar(@Param('id') id: string) {
+    return this.produtosService.Apagar(+id);
   }
 }
