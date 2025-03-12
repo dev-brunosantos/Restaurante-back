@@ -1,11 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
+import { log } from 'console';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ProdutosService {
-  create(createProdutoDto: CreateProdutoDto) {
-    return 'This action adds a new produto';
+
+  constructor( private prisma: PrismaService ) { }
+
+  async Criar(createProdutoDto: CreateProdutoDto) {
+    const produtoExistente = await this.prisma.produtos.findFirst({
+      where: { nome: createProdutoDto.nome }
+    })
+
+    if(!produtoExistente) {
+      const novoProduto = await this.prisma.produtos.create({
+        data: createProdutoDto
+      })
+
+      return novoProduto
+    }
+
+    throw new HttpException("Erro ao cadastrar um novo produto.", HttpStatus.BAD_REQUEST)
   }
 
   findAll() {
