@@ -13,8 +13,8 @@ export class CargosController {
   }
 
   @Get()
-  findAll() {
-    return this.cargosService.findAll();
+  Listar() {
+    return this.cargosService.ListarTodos();
   }
 
   @Get(':id')
