@@ -1,11 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCargoDto } from './dto/create-cargo.dto';
 import { UpdateCargoDto } from './dto/update-cargo.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CargosService {
-  create(createCargoDto: CreateCargoDto) {
-    return 'This action adds a new cargo';
+
+  constructor(private prisma: PrismaService) {}
+
+  async Criar(createCargoDto: CreateCargoDto) {
+    const cargoExistente =  await this.prisma.cargos.findFirst({
+      where: { cargo: createCargoDto.cargo }
+    })
+
+    if(!cargoExistente) {
+      const novoCargo = await this.prisma.cargos.create({
+        data: createCargoDto
+      })
+
+      return `O cargo ${novoCargo.cargo.toUpperCase()} foi criado com sucesso.`
+    }
+
+    throw new HttpException("O cargo informado ja esta cadastrado no banco de dados.", HttpStatus.BAD_REQUEST)
   }
 
   findAll() {
