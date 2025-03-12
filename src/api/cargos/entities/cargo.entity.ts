@@ -1,1 +1,3 @@
-export class Cargo {}
+export class Cargo {
+    cargo: string;
+}
