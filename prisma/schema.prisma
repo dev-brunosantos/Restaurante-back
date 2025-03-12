@@ -13,6 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Cargos {
+  id             Int      @id @default(autoincrement())
+  cargo          String   @unique
+  dt_criacao     DateTime @default(now())
+  dt_atualizacao DateTime @updatedAt()
+}
+
 model Produtos {
   id        Int    @id @default(autoincrement())
   nome      String @unique
