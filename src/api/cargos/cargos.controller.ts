@@ -8,8 +8,8 @@ export class CargosController {
   constructor(private readonly cargosService: CargosService) {}
 
   @Post()
-  create(@Body() createCargoDto: CreateCargoDto) {
-    return this.cargosService.create(createCargoDto);
+  Cadastrar(@Body() createCargoDto: CreateCargoDto) {
+    return this.cargosService.Criar(createCargoDto);
   }
 
   @Get()
