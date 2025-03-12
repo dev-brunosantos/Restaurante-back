@@ -13,8 +13,8 @@ export class ProdutosController {
   }
 
   @Get()
-  findAll() {
-    return this.produtosService.findAll();
+  Listar() {
+    return this.produtosService.Listar();
   }
 
   @Get(':id')

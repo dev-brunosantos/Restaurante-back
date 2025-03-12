@@ -35,12 +35,44 @@ export class ProdutosService {
     throw new HttpException("Não existe nenhum produto cadastrado no sistema.", HttpStatus.NOT_FOUND)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} produto`;
+  async BuscarPorID(id: number) {
+    const produtoID = await this.prisma.produtos.findFirst({
+      where: { id }
+    })
+
+    if(produtoID) {
+      return produtoID
+    }
+
+    throw new HttpException("Não existe nenhum produto vinculado ao ID informado.", HttpStatus.NOT_FOUND)
   }
 
-  update(id: number, updateProdutoDto: UpdateProdutoDto) {
-    return `This action updates a #${id} produto`;
+  async Atualizar(id: number, updateProdutoDto: UpdateProdutoDto) {
+
+    const { nome, descricao, preco } = updateProdutoDto;
+
+    const produtoID = await this.prisma.produtos.findFirst({
+      where: { id }
+    })
+
+    if(produtoID) {
+      const atualizacao = await this.prisma.produtos.update({
+        where: { id },
+        data: {
+          nome: nome === "" ? produtoID.nome : nome,
+          descricao: descricao === "" ? produtoID.descricao : descricao,
+          preco: preco === 0 ? produtoID.preco : preco
+        }
+      })
+
+      return {
+        status: "Atualização realizada com sucesso.",
+        dadosAntigo: produtoID,
+        dadosAtualizados: atualizacao
+      }
+    }
+
+    throw new HttpException("Não existe nenhum produto vinculado ao ID informado.", HttpStatus.NOT_FOUND)
   }
 
   remove(id: number) {
